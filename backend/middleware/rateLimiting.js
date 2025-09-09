@@ -44,9 +44,21 @@ const uploadLimiter = rateLimit({
     legacyHeaders: false,
 });
 
+// Server creation rate limiting
+const serverCreationLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 3, // Limit each IP to 3 server creations per hour
+    message: {
+        error: 'Too many servers created, please try again later.'
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 module.exports = {
     apiLimiter,
     authLimiter,
     messageLimiter,
-    uploadLimiter
+    uploadLimiter,
+    serverCreationLimiter
 };

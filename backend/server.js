@@ -13,6 +13,9 @@ const { apiLimiter } = require('./middleware/rateLimiting');
 // Route imports
 const authRoutes = require('./routes/auth');
 const messageRoutes = require('./routes/messages');
+const serverRoutes = require('./routes/servers');
+const channelRoutes = require('./routes/channels');
+const fileRoutes = require('./routes/files');
 
 // Initialize express app
 const app = express();
@@ -75,6 +78,9 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/servers', serverRoutes);
+app.use('/api/channels', channelRoutes);
+app.use('/api/files', fileRoutes);
 
 // Socket.IO connection handling
 const EncryptionUtil = require('../shared/utils/encryption');
