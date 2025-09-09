@@ -1,0 +1,17 @@
+{
+  "name": "dc2-frontend",
+  "version": "1.0.0",
+  "description": "Frontend webapp for DC2 privacy-focused Discord",
+  "main": "index.html",
+  "scripts": {
+    "dev": "http-server -p 3000 -c-1",
+    "build": "echo 'Static frontend - no build needed'",
+    "start": "http-server -p 3000"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.7.4"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
