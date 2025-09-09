@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC2 - Privacy-Focused Discord</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Login/Register Form -->
+        <div id="auth-container" class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1><i class="fas fa-shield-alt"></i> DC2</h1>
+                    <p>Privacy-Focused Communication</p>
+                </div>
+                
+                <div class="auth-tabs">
+                    <button id="login-tab" class="auth-tab active">Login</button>
+                    <button id="register-tab" class="auth-tab">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-username">Username or Email</label>
+                        <input type="text" id="login-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <input type="text" id="register-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <div class="privacy-notice">
+                        <i class="fas fa-info-circle"></i>
+                        <small>Your data is encrypted and we prioritize your privacy. Messages are automatically deleted after 30 days.</small>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <div id="main-container" class="main-container hidden">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2><i class="fas fa-shield-alt"></i> DC2</h2>
+                    <div class="user-info">
+                        <div class="user-avatar" id="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <span id="user-name">Username</span>
+                            <select id="user-status">
+                                <option value="online">🟢 Online</option>
+                                <option value="away">🟡 Away</option>
+                                <option value="busy">🔴 Busy</option>
+                                <option value="invisible">⚫ Invisible</option>
+                            </select>
+                        </div>
+                        <button id="logout-btn" class="btn-icon" title="Logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Direct Messages</h3>
+                    <div id="dm-list" class="channel-list">
+                        <!-- Direct messages will be populated here -->
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Servers</h3>
+                    <div id="server-list" class="server-list">
+                        <!-- Servers will be populated here -->
+                    </div>
+                </div>
+
+                <div class="sidebar-footer">
+                    <button id="privacy-settings-btn" class="btn-secondary">
+                        <i class="fas fa-user-shield"></i> Privacy Settings
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Channel Header -->
+                <div class="channel-header">
+                    <div class="channel-info">
+                        <h3 id="channel-name"># general</h3>
+                        <span id="channel-description">Welcome to DC2!</span>
+                    </div>
+                    <div class="channel-actions">
+                        <button class="btn-icon" title="Privacy Info">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        <button class="btn-icon" title="Settings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messages Area -->
+                <div class="messages-container">
+                    <div id="messages-list" class="messages-list">
+                        <!-- Messages will be populated here -->
+                    </div>
+                    
+                    <!-- Typing Indicator -->
+                    <div id="typing-indicator" class="typing-indicator hidden">
+                        <span></span>
+                    </div>
+                </div>
+
+                <!-- Message Input -->
+                <div class="message-input-container">
+                    <div class="message-input-wrapper">
+                        <button class="btn-icon" title="Upload File">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <input type="text" id="message-input" placeholder="Type a message... (Messages are encrypted)" autocomplete="off">
+                        <button id="send-button" class="btn-icon" title="Send Message">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="message-privacy-info">
+                        <i class="fas fa-lock"></i>
+                        <small>Messages are end-to-end encrypted and automatically deleted after 30 days</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy Settings Modal -->
+        <div id="privacy-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-user-shield"></i> Privacy Settings</h3>
+                    <button id="close-privacy-modal" class="btn-icon">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label for="allow-dm">Allow Direct Messages From:</label>
+                        <select id="allow-dm">
+                            <option value="everyone">Everyone</option>
+                            <option value="friends">Friends Only</option>
+                            <option value="none">No One</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="show-online-status">
+                            Show Online Status
+                        </label>
+                    </div>
+                    <div class="setting-group">
+                        <label for="data-retention">Message Retention (days):</label>
+                        <select id="data-retention">
+                            <option value="7">7 days</option>
+                            <option value="30">30 days</option>
+                            <option value="90">90 days</option>
+                        </select>
+                    </div>
+                    <div class="privacy-info">
+                        <h4><i class="fas fa-info-circle"></i> Your Privacy Rights</h4>
+                        <ul>
+                            <li>All messages are encrypted end-to-end</li>
+                            <li>We don't sell your data to third parties</li>
+                            <li>Messages are automatically deleted based on your retention settings</li>
+                            <li>You can export or delete all your data at any time</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="save-privacy-settings" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "dc2-discord-privacy",
+  "version": "1.0.0",
+  "description": "Privacy-focused Discord-like application with separate backend and frontend",
+  "main": "backend/server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm run dev",
+    "start": "node backend/server.js",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": ["discord", "privacy", "security", "chat", "nodejs", "mongodb"],
+  "author": "DC2 Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
