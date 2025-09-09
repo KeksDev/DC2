@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #5865F2;
+  --secondary: #4752C4;
+  --success: #3BA55C;
+  --danger: #ED4245;
+  --warning: #FAA61A;
+  --dark-bg: #2C2F33;
+  --darker-bg: #23272A;
+  --light-bg: #36393F;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B9BBBE;
+  --text-muted: #72767D;
+  --border-color: #40444B;
+  --accent: #7289DA;
+  --privacy: #43B581;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-dark-bg: var(--dark-bg);
+  --color-darker-bg: var(--darker-bg);
+  --color-light-bg: var(--light-bg);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border-color);
+  --color-accent: var(--accent);
+  --color-privacy: var(--privacy);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--darker-bg);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Animation utilities */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-out-right {
+  animation: slideOutRight 0.3s ease;
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
