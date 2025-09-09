@@ -5,6 +5,8 @@ import AuthContainer from '@/components/auth/AuthContainer';
 import ChatApp from '@/components/chat/ChatApp';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { SocketProvider } from '@/contexts/SocketContext';
+import { ServerProvider } from '@/contexts/ServerContext';
+import { LanguageProvider } from '@/components/chat/LanguageSelector';
 
 function AppContent() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -41,9 +43,11 @@ function AppContent() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <SocketProvider>
-            <ChatApp />
-          </SocketProvider>
+          <ServerProvider>
+            <SocketProvider>
+              <ChatApp />
+            </SocketProvider>
+          </ServerProvider>
         </motion.div>
       )}
     </AnimatePresence>
@@ -52,8 +56,10 @@ function AppContent() {
 
 export default function HomePage() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </LanguageProvider>
   );
 }

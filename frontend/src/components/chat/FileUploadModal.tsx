@@ -6,43 +6,39 @@ import { motion } from 'framer-motion';
 interface FileUploadModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUpload: (file: File) => Promise<void>;
-  channelId: string;
+  onUpload: (files: FileList) => Promise<void>;
+  maxSize: number;
+  acceptedTypes: Record<string, string[]>;
 }
 
 const FileUploadModal: React.FC<FileUploadModalProps> = ({
   isOpen,
   onClose,
   onUpload,
-  channelId
+  maxSize,
+  acceptedTypes
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
 
   const handleFileSelect = (file: File) => {
-    // Check file size (10MB limit)
-    if (file.size > 10 * 1024 * 1024) {
-      alert('File size must be less than 10MB');
+    // Check file size
+    if (file.size > maxSize) {
+      alert(`File size must be less than ${Math.round(maxSize / (1024 * 1024))}MB`);
       return;
     }
 
-    // Check file type
-    const allowedTypes = [
-      'image/jpeg',
-      'image/png',
-      'image/gif',
-      'image/webp',
-      'text/plain',
-      'application/pdf',
-      'application/json',
-      'audio/mpeg',
-      'audio/wav',
-      'video/mp4',
-      'video/webm'
-    ];
+    // Check file type using acceptedTypes
+    const allowedMimeTypes = Object.keys(acceptedTypes);
+    const isAllowed = allowedMimeTypes.some(type => {
+      if (type.endsWith('/*')) {
+        return file.type.startsWith(type.slice(0, -1));
+      }
+      return file.type === type;
+    });
 
-    if (!allowedTypes.includes(file.type)) {
+    if (!isAllowed) {
       alert('File type not supported');
       return;
     }
@@ -75,7 +71,17 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
 
     setIsUploading(true);
     try {
-      await onUpload(selectedFile);
+      // Create a FileList-like object with the single file
+      const fileList = {
+        0: selectedFile,
+        length: 1,
+        item: (index: number) => index === 0 ? selectedFile : null,
+        [Symbol.iterator]: function* () {
+          yield selectedFile;
+        }
+      } as FileList;
+      
+      await onUpload(fileList);
       setSelectedFile(null);
       onClose();
     } catch (error) {
@@ -150,7 +156,7 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
                   Drop a file here or click to browse
                 </p>
                 <p className="text-[var(--text-secondary)] text-sm">
-                  Maximum size: 10MB
+                  Maximum size: {Math.round(maxSize / (1024 * 1024))}MB
                 </p>
                 <p className="text-[var(--text-secondary)] text-xs mt-1">
                   Supported: Images, PDFs, Text, Audio, Video
@@ -166,7 +172,9 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
                 }}
                 className="hidden"
                 id="fileInput"
-                accept="image/*,application/pdf,text/plain,application/json,audio/*,video/mp4,video/webm"
+                accept={Object.entries(acceptedTypes).map(([type, exts]) => 
+                  type.endsWith('/*') ? type : exts.join(',')
+                ).join(',')}
               />
               <label
                 htmlFor="fileInput"
