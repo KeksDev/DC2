@@ -123,6 +123,26 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
   const sendMessage = (content: string, channelId: string) => {
     if (socket && content.trim()) {
+      // Handle demo channel locally to avoid CastError
+      if (channelId === 'demo-general') {
+        const demoMessage: Message = {
+          _id: Date.now().toString(),
+          content,
+          author: {
+            _id: user?._id || 'demo-user',
+            username: user?.username || 'Demo User',
+            avatar: user?.avatar
+          },
+          channelId,
+          createdAt: new Date().toISOString(),
+          type: 'text'
+        };
+        
+        setMessages(prev => [...prev, demoMessage]);
+        return;
+      }
+      
+      // For real channels, send to backend
       socket.emit('send_message', {
         content,
         channelId,
